@@ -62,17 +62,8 @@ steps:
         sed "s/[^A-Za-z0-9]/-/g")\"" >> env.txt
       fi
 
-      if [ "$_API_VERSION" = "apigee" ]
-      then
-        echo "APIGEE_BUILD_PASS=\"$(gcloud secrets versions access latest \
-          --secret=devrel_apigee_pass --format="get(payload.data)" | \
-          base64 -d)\"" >> env.txt &&
-        echo "APIGEE_BUILD_USER=\"$(gcloud secrets versions access latest \
-          --secret=devrel_apigee_user --format="get(payload.data)" | \
-          base64 -d)\"" >> env.txt
-      else
-        echo "APIGEE_BUILD_TOKEN=\"$(gcloud auth application-default print-access-token)\"" >> env.txt
-      fi
+ 
+      echo "APIGEE_BUILD_TOKEN=\"$(gcloud auth application-default print-access-token)\"" >> env.txt
 
       echo "[BUILD CONFIG]"
       echo
@@ -86,18 +77,6 @@ steps:
   args:
     - "-c"
     - |-
-      if [ "$_API_VERSION" = "apigee" ]
-      then
-        source env.txt && \
-        mvn clean install -ntp \
-          -P"apigeeapi" \
-          -Denv="$${APIGEE_ENV}" \
-          -Dpassword="$${APIGEE_BUILD_PASS}" \
-          -Dusername="$${APIGEE_BUILD_USER}" \
-          -Dorg="$_DEPLOYMENT_ORG" \
-          -Ddeployment.suffix="$${APIGEE_BUILD_DEPLOYMENT_SUFFIX}" \
-          -Ddeployment.description="CloudRun Build: $BUILD_ID"
-      else
         source env.txt && \
         mvn clean install -ntp \
           -P"googleapi" \
@@ -106,7 +85,6 @@ steps:
           -Dorg="$_DEPLOYMENT_ORG" \
           -Ddeployment.suffix="$${APIGEE_BUILD_DEPLOYMENT_SUFFIX}" \
           -Ddeployment.description="CloudRun Build: $BUILD_ID"
-      fi
   # Run integration tests
 - name: node
   id: "Integration Test"
@@ -132,15 +110,15 @@ steps:
       gs://${PROJECT_ID}_cloudbuild/reports/$BUILD_ID
 substitutions:
     # Apigee Org for where to deploy to
-    _DEPLOYMENT_ORG: my-org
+    _DEPLOYMENT_ORG: dev-project-242716
     # (Optional) Apigee Environment overrides
-    _APIGEE_TEST_ENV: test
+    _APIGEE_TEST_ENV: test-env
     _APIGEE_PROD_ENV: prod
     # Managment API version use:
     # 'apigee' for current Apigee Edge
     # 'google' for Apigee X and hybrid
-    _API_VERSION: apigee #apgiee|google
+    _API_VERSION: google #apgiee|google
     # Host name for the integration test
-    _INT_TEST_HOST: org-env.apigee.net
+    _INT_TEST_HOST: public.apigee.carloscabral.com.br
     # Base path for the integration test
     _INT_TEST_BASE_PATH: /my-proxy/v1
