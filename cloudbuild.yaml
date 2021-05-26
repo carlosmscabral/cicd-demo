@@ -121,4 +121,4 @@ substitutions:
     # Host name for the integration test
     _INT_TEST_HOST: public.apigee.carloscabral.com.br
     # Base path for the integration test
-    _INT_TEST_BASE_PATH: /my-proxy/v1
+    _INT_TEST_BASE_PATH: /airports-cicd/v1
