@@ -18,7 +18,7 @@
     <FaultResponse>
         <Set>
             <StatusCode>404</StatusCode>
-            <ReasonPhrase>The requested resource {proxy.pathsuffix} was not found.</ReasonPhrase>
+            <ReasonPhrase>The requested resource {proxy.pathsuffix} was not found LALA</ReasonPhrase>
             <Payload contentType="application/json">
                 {
                     "error":"404.01.001",
