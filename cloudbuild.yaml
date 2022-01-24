@@ -114,9 +114,9 @@ artifacts:
     
 substitutions:
     # Apigee Org for where to deploy to
-    _DEPLOYMENT_ORG: dev-project-242716
+    _DEPLOYMENT_ORG: prod-project-242716
     # (Optional) Apigee Environment overrides
-    _APIGEE_TEST_ENV: test-env
+    _APIGEE_TEST_ENV: eval
     _APIGEE_PROD_ENV: prod
     # Managment API version use:
     # 'apigee' for current Apigee Edge
